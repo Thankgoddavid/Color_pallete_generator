@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Palette Generator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .palette {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .color-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+    }
+
+    .color-box:hover {
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .copied {
+      font-size: 14px;
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Color Palette Generator</h1>
+
+  <!-- Container for all color boxes -->
+  <div class="palette" id="palette">
+    <!-- Color boxes will be generated here by JavaScript -->
+  </div>
+
+  <!-- Button to generate new colors -->
+  <button onclick="generatePalette()">Generate New Colors</button>
+
+  <!-- Feedback message for copied color -->
+  <div class="copied" id="copiedMessage"></div>
+
+  <script>
+    // Function to generate a random HEX color code like "#A1B2C3"
+    function getRandomColor() {
+      const hex = Math.floor(Math.random() * 16777215).toString(16);
+      return "#" + hex.padStart(6, '0');
+    }
+
+    // Function to generate the full color palette
+    function generatePalette() {
+      const palette = document.getElementById("palette");
+      palette.innerHTML = ""; // Clear old colors
+
+      for (let i = 0; i < 4; i++) {
+        const color = getRandomColor(); // Get a random color
+        const box = document.createElement("div"); // Create a new div
+
+        // Add class and style
+        box.className = "color-box";
+        box.style.backgroundColor = color;
+        box.textContent = color; // Show the HEX code inside
+
+        // Add click event to copy color
+        box.onclick = function () {
+          copyToClipboard(color);
+        };
+
+        // Add box to the palette
+        palette.appendChild(box);
+      }
+    }
+
+    // Function to copy color code to clipboard and show a message
+    function copyToClipboard(color) {
+      navigator.clipboard.writeText(color); // Copy text to clipboard
+
+      const msg = document.getElementById("copiedMessage");
+      msg.textContent = color + " copied to clipboard!";
+      
+      // Clear message after 2 seconds
+      setTimeout(() => {
+        msg.textContent = "";
+      }, 2000);
+    }
+
+    // Generate colors immediately on page load
+    generatePalette();
+  </script>
+
+</body>
+</html>
